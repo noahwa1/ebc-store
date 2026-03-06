@@ -1556,10 +1556,10 @@ function submitQuote(e) {
         </div>
     `;
 
-    // Also open mailto as backup
+    // Send quote to Dennis
     const subject = encodeURIComponent(`EBC Team Store - Quote Request from ${data.firstName} ${data.lastName}`);
     const mailBody = encodeURIComponent(body);
-    window.open(`mailto:?subject=${subject}&body=${mailBody}`, '_blank');
+    window.open(`mailto:Dennis@customwear.us?subject=${subject}&body=${mailBody}`, '_blank');
 }
 
 function finishQuote() {
@@ -1611,7 +1611,7 @@ function submitContact(e) {
     const message = document.getElementById('cMessage').value;
     const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
     const subj = encodeURIComponent(`EBC Team Store - ${subject}`);
-    window.open(`mailto:?subject=${subj}&body=${body}`, '_blank');
+    window.open(`mailto:Dennis@customwear.us?subject=${subj}&body=${body}`, '_blank');
     document.getElementById('contactModal').querySelector('.modal-body').innerHTML = `
         <div class="success-msg">
             <div class="checkmark">&#10003;</div>
