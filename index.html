@@ -4,8 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elmhurst Bicycle Club - Team Store</title>
+    <script>
+    // Iframe auto-resize: tell parent window our height so iframe grows to fit
+    function notifyParentHeight() {
+        const h = document.documentElement.scrollHeight;
+        window.parent.postMessage({ type: 'ebcStoreHeight', height: h }, '*');
+    }
+    // When a modal opens, scroll iframe to top so fixed modals are visible
+    function notifyParentScrollTop() {
+        window.parent.postMessage({ type: 'ebcStoreScrollTop' }, '*');
+    }
+    window.addEventListener('load', notifyParentHeight);
+    new MutationObserver(notifyParentHeight).observe(document.body, { childList: true, subtree: true, attributes: true });
+    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: auto; overflow: auto; }
         :root {
             --red: #C41E2A;
             --maroon: #6B1A2A;
@@ -1189,6 +1203,8 @@ function scrollToSection(id) {
 function openProduct(id) {
     const p = products.find(x => x.id === id);
     if (!p) return;
+    window.scrollTo(0, 0);
+    if (window.parent !== window) notifyParentScrollTop();
 
     document.getElementById('modalImg').innerHTML = `<img src="${p.image}" alt="${p.design}">`;
 
@@ -1450,6 +1466,8 @@ function renderCartItems() {
 
 function openCart() {
     renderCartItems();
+    window.scrollTo(0, 0);
+    if (window.parent !== window) notifyParentScrollTop();
     document.getElementById('cartOverlay').classList.add('open');
     document.getElementById('cartDrawer').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -1464,6 +1482,8 @@ function closeCart() {
 // ============ QUOTE FORM ============
 function openQuoteForm() {
     if (cart.length === 0) return;
+    window.scrollTo(0, 0);
+    if (window.parent !== window) notifyParentScrollTop();
 
     const container = document.getElementById('quoteFormContainer');
     container.innerHTML = `
@@ -1594,6 +1614,8 @@ function showSizeTab(key) {
 
 // ============ CONTACT ============
 function openContact() {
+    window.scrollTo(0, 0);
+    if (window.parent !== window) notifyParentScrollTop();
     document.getElementById('contactModal').classList.add('open');
     document.body.style.overflow = 'hidden';
 }
