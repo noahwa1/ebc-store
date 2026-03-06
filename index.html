@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elmhurst Bicycle Club - Team Store</title>
-    <script>
-    var isIframe = window.parent !== window;
-    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -1280,13 +1277,13 @@ function openProduct(id) {
 
     document.getElementById('modalBody').innerHTML = html;
     document.getElementById('productModal').classList.add('open');
-    if (!isIframe) document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
 }
 
 function closeProductModal(e) {
     if (!e || e.target === document.getElementById('productModal')) {
         document.getElementById('productModal').classList.remove('open');
-        if (!isIframe) document.body.style.overflow = '';
+        document.body.style.overflow = '';
     }
 }
 
@@ -1455,13 +1452,13 @@ function openCart() {
     renderCartItems();
     document.getElementById('cartOverlay').classList.add('open');
     document.getElementById('cartDrawer').classList.add('open');
-    if (!isIframe) document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
 }
 
 function closeCart() {
     document.getElementById('cartOverlay').classList.remove('open');
     document.getElementById('cartDrawer').classList.remove('open');
-    if (!isIframe) document.body.style.overflow = '';
+    document.body.style.overflow = '';
 }
 
 // ============ QUOTE FORM ============
@@ -1598,12 +1595,12 @@ function showSizeTab(key) {
 // ============ CONTACT ============
 function openContact() {
     document.getElementById('contactModal').classList.add('open');
-    if (!isIframe) document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
 }
 function closeContact(e) {
     if (!e || e.target === document.getElementById('contactModal')) {
         document.getElementById('contactModal').classList.remove('open');
-        if (!isIframe) document.body.style.overflow = '';
+        document.body.style.overflow = '';
     }
 }
 function submitContact(e) {
