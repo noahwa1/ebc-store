@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elmhurst Bicycle Club - Team Store</title>
     <script>
-    // Iframe detection: if embedded, make the iframe itself scroll (not the parent)
-    // This makes position:fixed modals work correctly inside the iframe
-    if (window.parent !== window) {
-        document.documentElement.style.height = '100%';
-        document.body.style.height = '100%';
-        document.body.style.overflow = 'auto';
+    // Iframe modal fix: position overlays at current scroll position
+    var isIframe = window.parent !== window;
+    function positionOverlay(el) {
+        if (!isIframe) return;
+        el.style.position = 'absolute';
+        el.style.top = window.scrollY + 'px';
+        el.style.height = window.innerHeight + 'px';
     }
     </script>
     <style>
@@ -1285,14 +1286,16 @@ function openProduct(id) {
     html += `<button class="btn-add-cart" onclick="addToCart('${p.id}')">Add to Cart</button>`;
 
     document.getElementById('modalBody').innerHTML = html;
-    document.getElementById('productModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
+    var pm = document.getElementById('productModal');
+    positionOverlay(pm);
+    pm.classList.add('open');
+    if (!isIframe) document.body.style.overflow = 'hidden';
 }
 
 function closeProductModal(e) {
     if (!e || e.target === document.getElementById('productModal')) {
         document.getElementById('productModal').classList.remove('open');
-        document.body.style.overflow = '';
+        if (!isIframe) document.body.style.overflow = '';
     }
 }
 
@@ -1459,9 +1462,13 @@ function renderCartItems() {
 
 function openCart() {
     renderCartItems();
-    document.getElementById('cartOverlay').classList.add('open');
-    document.getElementById('cartDrawer').classList.add('open');
-    document.body.style.overflow = 'hidden';
+    var co = document.getElementById('cartOverlay');
+    var cd = document.getElementById('cartDrawer');
+    positionOverlay(co);
+    if (isIframe) { cd.style.position = 'absolute'; cd.style.top = window.scrollY + 'px'; cd.style.height = window.innerHeight + 'px'; }
+    co.classList.add('open');
+    cd.classList.add('open');
+    if (!isIframe) document.body.style.overflow = 'hidden';
 }
 
 function closeCart() {
@@ -1512,7 +1519,9 @@ function openQuoteForm() {
         </form>
     `;
 
-    document.getElementById('quoteOverlay').classList.add('open');
+    var qo = document.getElementById('quoteOverlay');
+    positionOverlay(qo);
+    qo.classList.add('open');
 }
 
 function closeQuoteForm(e) {
@@ -1603,13 +1612,15 @@ function showSizeTab(key) {
 
 // ============ CONTACT ============
 function openContact() {
-    document.getElementById('contactModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
+    var cm = document.getElementById('contactModal');
+    positionOverlay(cm);
+    cm.classList.add('open');
+    if (!isIframe) document.body.style.overflow = 'hidden';
 }
 function closeContact(e) {
     if (!e || e.target === document.getElementById('contactModal')) {
         document.getElementById('contactModal').classList.remove('open');
-        document.body.style.overflow = '';
+        if (!isIframe) document.body.style.overflow = '';
     }
 }
 function submitContact(e) {
