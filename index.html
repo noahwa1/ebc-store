@@ -5,14 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elmhurst Bicycle Club - Team Store</title>
     <script>
-    // Iframe modal fix: position overlays at current scroll position
     var isIframe = window.parent !== window;
-    function positionOverlay(el) {
-        if (!isIframe) return;
-        el.style.position = 'absolute';
-        el.style.top = window.scrollY + 'px';
-        el.style.height = window.innerHeight + 'px';
-    }
     </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1286,9 +1279,7 @@ function openProduct(id) {
     html += `<button class="btn-add-cart" onclick="addToCart('${p.id}')">Add to Cart</button>`;
 
     document.getElementById('modalBody').innerHTML = html;
-    var pm = document.getElementById('productModal');
-    positionOverlay(pm);
-    pm.classList.add('open');
+    document.getElementById('productModal').classList.add('open');
     if (!isIframe) document.body.style.overflow = 'hidden';
 }
 
@@ -1462,19 +1453,15 @@ function renderCartItems() {
 
 function openCart() {
     renderCartItems();
-    var co = document.getElementById('cartOverlay');
-    var cd = document.getElementById('cartDrawer');
-    positionOverlay(co);
-    if (isIframe) { cd.style.position = 'absolute'; cd.style.top = window.scrollY + 'px'; cd.style.height = window.innerHeight + 'px'; }
-    co.classList.add('open');
-    cd.classList.add('open');
+    document.getElementById('cartOverlay').classList.add('open');
+    document.getElementById('cartDrawer').classList.add('open');
     if (!isIframe) document.body.style.overflow = 'hidden';
 }
 
 function closeCart() {
     document.getElementById('cartOverlay').classList.remove('open');
     document.getElementById('cartDrawer').classList.remove('open');
-    document.body.style.overflow = '';
+    if (!isIframe) document.body.style.overflow = '';
 }
 
 // ============ QUOTE FORM ============
@@ -1519,9 +1506,7 @@ function openQuoteForm() {
         </form>
     `;
 
-    var qo = document.getElementById('quoteOverlay');
-    positionOverlay(qo);
-    qo.classList.add('open');
+    document.getElementById('quoteOverlay').classList.add('open');
 }
 
 function closeQuoteForm(e) {
@@ -1612,9 +1597,7 @@ function showSizeTab(key) {
 
 // ============ CONTACT ============
 function openContact() {
-    var cm = document.getElementById('contactModal');
-    positionOverlay(cm);
-    cm.classList.add('open');
+    document.getElementById('contactModal').classList.add('open');
     if (!isIframe) document.body.style.overflow = 'hidden';
 }
 function closeContact(e) {
