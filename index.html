@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elmhurst Bicycle Club - Team Store</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #C41E2A;
+            --maroon: #6B1A2A;
+            --cyan: #00BCD4;
+            --lime: #A8D500;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --gray: #666;
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: var(--dark); background: var(--light); }
+        a { text-decoration: none; }
+
+        /* ============ HEADER ============ */
+        header {
+            background: linear-gradient(135deg, var(--maroon), var(--red));
+            color: white;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+        }
+        .header-inner {
+            max-width: 1280px; margin: 0 auto; padding: 14px 24px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .header-brand h1 { font-size: 1.4rem; font-weight: 700; }
+        .header-brand span { font-size: 0.8rem; opacity: 0.8; }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .header-badge {
+            background: var(--cyan); color: var(--dark);
+            font-size: 0.7rem; font-weight: 700; padding: 4px 12px;
+            border-radius: 20px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .cart-btn {
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+            color: white; padding: 8px 16px; border-radius: 8px;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+        }
+        .cart-btn:hover { background: rgba(255,255,255,0.25); }
+        .cart-count {
+            background: var(--cyan); color: var(--dark);
+            font-size: 0.7rem; font-weight: 800; width: 20px; height: 20px;
+            border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+        }
+
+        /* ============ NAV ============ */
+        nav { background: var(--dark); position: relative; }
+        .nav-scroll {
+            max-width: 1280px; margin: 0 auto; display: none; align-items: center;
+        }
+        .nav-toggle {
+            display: none; background: none; border: none; color: white;
+            padding: 12px 16px; cursor: pointer; font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        nav ul {
+            max-width: 1280px; margin: 0 auto; padding: 0 24px;
+            list-style: none; display: flex; gap: 0; flex-wrap: wrap;
+            justify-content: center;
+        }
+        nav a {
+            display: block; color: #aaa; padding: 10px 14px;
+            font-size: 0.78rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.8px; border-bottom: 3px solid transparent;
+            transition: all 0.2s; white-space: nowrap; cursor: pointer;
+        }
+        nav a:hover, nav a.active { color: white; border-bottom-color: var(--cyan); }
+        /* Mobile: hamburger */
+        @media (max-width: 900px) {
+            .nav-scroll { display: flex; }
+            .nav-toggle { display: block; }
+            nav ul {
+                display: none; flex-direction: column; width: 100%;
+                padding: 0; background: var(--dark);
+                position: absolute; top: 100%; left: 0; z-index: 99;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            }
+            nav ul.open { display: flex; }
+            nav a { padding: 14px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); border-left: 3px solid transparent; }
+            nav a:hover, nav a.active { border-bottom-color: rgba(255,255,255,0.06); border-left-color: var(--cyan); background: rgba(255,255,255,0.05); }
+        }
+
+        /* ============ HERO ============ */
+        .hero {
+            background: linear-gradient(135deg, var(--maroon) 0%, var(--red) 50%, var(--maroon) 100%);
+            color: white; text-align: center; padding: 70px 24px;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 30% 50%, rgba(168,213,0,0.12) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 50%, rgba(0,188,212,0.08) 0%, transparent 50%);
+        }
+        .hero h2 { font-size: 2.8rem; font-weight: 800; position: relative; margin-bottom: 12px; }
+        .hero p { font-size: 1.1rem; opacity: 0.9; max-width: 650px; margin: 0 auto 28px; position: relative; line-height: 1.6; }
+        .hero-cta {
+            display: inline-block; background: var(--cyan); color: var(--dark);
+            font-weight: 700; padding: 14px 36px; border-radius: 6px;
+            text-transform: uppercase; letter-spacing: 1px; position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,188,212,0.4); }
+
+        /* ============ SECTIONS ============ */
+        .section { max-width: 1280px; margin: 0 auto; padding: 50px 24px; }
+        .section-header { margin-bottom: 32px; }
+        .accent-bar { width: 50px; height: 4px; background: linear-gradient(90deg, var(--red), var(--cyan)); border-radius: 2px; margin-bottom: 12px; }
+        .section-title { font-size: 1.6rem; font-weight: 800; color: var(--maroon); margin-bottom: 6px; }
+        .section-subtitle { color: var(--gray); font-size: 0.95rem; }
+
+        /* ============ PRODUCT GRID ============ */
+        .product-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px;
+        }
+        .product-card {
+            background: white; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            transition: transform 0.25s, box-shadow 0.25s; cursor: pointer;
+        }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.14); }
+        .product-image {
+            width: 100%; aspect-ratio: 4/3; background: #eee;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+        .product-image img { width: 100%; height: 100%; object-fit: contain; background: white; padding: 8px; }
+        .product-info { padding: 16px; }
+        .product-category-tag {
+            font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--cyan); margin-bottom: 4px;
+        }
+        .product-name { font-size: 1rem; font-weight: 700; margin-bottom: 4px; line-height: 1.3; }
+        .product-design { font-size: 0.8rem; color: var(--gray); margin-bottom: 10px; }
+        .product-fits {
+            display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px;
+        }
+        .fit-tag {
+            font-size: 0.65rem; font-weight: 600; padding: 2px 8px;
+            border-radius: 3px; background: #f0f0f0; color: #555;
+        }
+        .product-price-tag {
+            font-size: 1.05rem; font-weight: 800; color: var(--maroon); margin-bottom: 6px;
+        }
+        .btn-add {
+            width: 100%; padding: 10px; border: none; border-radius: 6px;
+            background: var(--red); color: white; font-size: 0.8rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .btn-add:hover { background: var(--maroon); }
+
+        /* ============ CATEGORY FILTER ============ */
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+        .filter-btn {
+            background: white; border: 2px solid #ddd; color: #555;
+            padding: 7px 18px; border-radius: 30px; font-size: 0.8rem;
+            font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+        .filter-btn:hover { border-color: var(--cyan); color: var(--dark); }
+        .filter-btn.active { background: var(--maroon); border-color: var(--maroon); color: white; }
+
+        /* ============ MODAL ============ */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            z-index: 200; align-items: center; justify-content: center; padding: 24px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: white; border-radius: 16px; max-width: 700px; width: 100%;
+            max-height: 92vh; overflow-y: auto; position: relative;
+        }
+        .modal-close {
+            position: absolute; top: 12px; right: 16px; background: rgba(0,0,0,0.5);
+            border: none; font-size: 1.3rem; cursor: pointer; color: white; z-index: 10;
+            width: 36px; height: 36px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+        }
+        .modal-close:hover { background: rgba(0,0,0,0.7); }
+        .modal-img-wrap {
+            width: 100%; background: white; display: flex; align-items: center;
+            justify-content: center; border-radius: 16px 16px 0 0; overflow: hidden;
+            max-height: 350px;
+        }
+        .modal-img-wrap img { max-width: 100%; max-height: 350px; object-fit: contain; padding: 16px; }
+        .modal-body { padding: 24px; }
+        .modal-body h3 { font-size: 1.3rem; margin-bottom: 4px; }
+        .modal-design { font-size: 0.9rem; color: var(--gray); margin-bottom: 16px; }
+        .modal-body .field-label {
+            font-weight: 700; font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 0.5px; color: #444; margin-bottom: 8px; display: block;
+        }
+        .option-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        .option-btn {
+            padding: 8px 16px; border: 2px solid #ddd; border-radius: 6px;
+            font-size: 0.82rem; font-weight: 600; cursor: pointer;
+            background: white; transition: all 0.15s; text-align: center;
+        }
+        .option-btn:hover { border-color: var(--red); }
+        .option-btn.selected { border-color: var(--red); background: var(--red); color: white; }
+        .option-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .modal-note {
+            font-size: 0.8rem; color: var(--gray); line-height: 1.5;
+            margin-bottom: 16px; padding: 12px; background: #f8f8f8; border-radius: 8px;
+        }
+        .btn-add-cart {
+            width: 100%; padding: 14px; border: none; border-radius: 8px;
+            background: var(--red); color: white; font-size: 1rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .btn-add-cart:hover { background: var(--maroon); }
+        .btn-add-cart:disabled { background: #ccc; cursor: not-allowed; }
+        .qty-row {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+        }
+        .qty-input {
+            width: 70px; padding: 8px 12px; border: 2px solid #ddd; border-radius: 6px;
+            font-size: 1rem; text-align: center; font-weight: 600;
+        }
+
+        /* ============ CART DRAWER ============ */
+        .cart-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 300;
+        }
+        .cart-overlay.open { display: block; }
+        .cart-drawer {
+            position: fixed; top: 0; right: -460px; width: 440px; max-width: 100vw;
+            height: 100vh; background: white; z-index: 301;
+            box-shadow: -4px 0 20px rgba(0,0,0,0.2);
+            display: flex; flex-direction: column;
+            transition: right 0.3s ease;
+        }
+        .cart-drawer.open { right: 0; }
+        .cart-header {
+            padding: 20px 24px; border-bottom: 1px solid #eee;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .cart-header h3 { font-size: 1.2rem; }
+        .cart-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #999; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 16px 24px; }
+        .cart-empty { text-align: center; padding: 40px 0; color: #999; }
+        .cart-item {
+            display: flex; gap: 12px; padding: 14px 0;
+            border-bottom: 1px solid #f0f0f0; align-items: flex-start;
+        }
+        .cart-item-img {
+            width: 70px; height: 55px; border-radius: 6px; overflow: hidden;
+            background: #f5f5f5; flex-shrink: 0;
+        }
+        .cart-item-img img { width: 100%; height: 100%; object-fit: contain; }
+        .cart-item-details { flex: 1; min-width: 0; }
+        .cart-item-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 2px; }
+        .cart-item-meta { font-size: 0.75rem; color: var(--gray); line-height: 1.4; }
+        .cart-item-remove {
+            background: none; border: none; color: #ccc; cursor: pointer;
+            font-size: 1.1rem; padding: 4px;
+        }
+        .cart-item-remove:hover { color: var(--red); }
+        .cart-footer { padding: 20px 24px; border-top: 1px solid #eee; }
+        .promo-bar { margin-bottom: 4px; }
+        .promo-label { font-size: 0.78rem; color: #555; margin-bottom: 4px; }
+        .promo-bar.unlocked .promo-label { color: #4CAF50; font-weight: 700; }
+        .promo-track {
+            width: 100%; height: 8px; background: #e8e8e8; border-radius: 4px; overflow: hidden;
+        }
+        .promo-fill {
+            height: 100%; border-radius: 4px; transition: width 0.4s ease;
+            background: linear-gradient(90deg, var(--red), var(--maroon));
+        }
+        .promo-fill.shipping {
+            background: linear-gradient(90deg, var(--cyan), #0097A7);
+        }
+        .promo-bar.unlocked .promo-fill { background: linear-gradient(90deg, #4CAF50, #2E7D32); }
+        .promo-bar.unlocked .promo-fill.shipping { background: linear-gradient(90deg, #4CAF50, #2E7D32); }
+        .cart-summary { font-size: 0.85rem; color: var(--gray); margin-bottom: 16px; }
+        .btn-quote {
+            width: 100%; padding: 14px; border: none; border-radius: 8px;
+            background: var(--red); color: white; font-size: 0.95rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .btn-quote:hover { background: var(--maroon); }
+
+        /* ============ QUOTE FORM ============ */
+        .quote-form-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            z-index: 400; align-items: center; justify-content: center; padding: 24px;
+        }
+        .quote-form-overlay.open { display: flex; }
+        .quote-form {
+            background: white; border-radius: 16px; max-width: 550px; width: 100%;
+            max-height: 90vh; overflow-y: auto; padding: 32px;
+        }
+        .quote-form h3 { font-size: 1.3rem; margin-bottom: 4px; }
+        .quote-form .subtitle { color: var(--gray); font-size: 0.9rem; margin-bottom: 24px; }
+        .form-field { margin-bottom: 16px; }
+        .form-field label {
+            display: block; font-size: 0.8rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; color: #444;
+        }
+        .form-field input, .form-field textarea, .form-field select {
+            width: 100%; padding: 10px 14px; border: 2px solid #ddd; border-radius: 8px;
+            font-size: 0.9rem; font-family: inherit; transition: border-color 0.2s;
+        }
+        .form-field input:focus, .form-field textarea:focus { border-color: var(--cyan); outline: none; }
+        .form-field textarea { resize: vertical; min-height: 80px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-actions { display: flex; gap: 12px; margin-top: 24px; }
+        .btn-submit-quote {
+            flex: 1; padding: 14px; border: none; border-radius: 8px;
+            background: var(--red); color: white; font-size: 0.95rem;
+            font-weight: 700; text-transform: uppercase; cursor: pointer;
+        }
+        .btn-submit-quote:hover { background: var(--maroon); }
+        .btn-cancel-quote {
+            padding: 14px 24px; border: 2px solid #ddd; border-radius: 8px;
+            background: white; color: #555; font-size: 0.95rem;
+            font-weight: 600; cursor: pointer;
+        }
+
+        /* ============ SUCCESS ============ */
+        .success-msg {
+            text-align: center; padding: 40px;
+        }
+        .success-msg .checkmark {
+            width: 64px; height: 64px; background: #4CAF50; color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; margin: 0 auto 16px;
+        }
+        .success-msg h3 { margin-bottom: 8px; }
+        .success-msg p { color: var(--gray); line-height: 1.6; }
+
+        /* ============ INFO SECTIONS ============ */
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+        .info-card {
+            background: white; border-radius: 12px; padding: 28px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+        .info-card h4 { font-size: 1rem; margin-bottom: 12px; color: var(--maroon); }
+        .info-card p, .info-card li { font-size: 0.85rem; color: #555; line-height: 1.6; }
+        .info-card ul { padding-left: 18px; }
+        .info-card li { margin-bottom: 4px; }
+        .steps-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 28px; margin-top: 24px; }
+        .step { text-align: center; }
+        .step-num {
+            width: 48px; height: 48px; background: linear-gradient(135deg, var(--red), var(--maroon));
+            color: white; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-size: 1.2rem; font-weight: 800; margin: 0 auto 12px;
+        }
+        .step h4 { font-size: 0.95rem; margin-bottom: 6px; }
+        .step p { font-size: 0.82rem; color: var(--gray); line-height: 1.5; }
+
+        /* ============ FABRIC INFO ============ */
+        /* ============ SIZE CHART TABS ============ */
+        .size-tabs { display: flex; flex-wrap: wrap; gap: 0; border-bottom: 2px solid #ddd; margin-bottom: 24px; }
+        .size-tab {
+            padding: 10px 20px; font-size: 0.82rem; font-weight: 600; color: #777;
+            cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s;
+            background: none; border: none; border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+        .size-tab:hover { color: var(--dark); }
+        .size-tab.active { color: var(--maroon); border-bottom-color: var(--red); }
+        .size-panel { display: none; }
+        .size-panel.active { display: block; }
+        .size-panel h4 { font-size: 1.05rem; margin-bottom: 6px; color: var(--maroon); }
+        .size-panel .size-note {
+            font-size: 0.82rem; color: #666; line-height: 1.6; margin-bottom: 16px;
+            padding: 12px 16px; background: #f8f8f8; border-radius: 8px; border-left: 3px solid var(--cyan);
+        }
+        .size-panel .size-note strong { color: var(--dark); }
+        .size-panel .size-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+        .size-panel .size-table th {
+            background: var(--maroon); color: white; padding: 10px 14px; text-align: left;
+            font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .size-panel .size-table td { padding: 9px 14px; border-bottom: 1px solid #eee; font-size: 0.84rem; }
+        .size-panel .size-table tr:hover td { background: #fafafa; }
+        .size-panel .size-table td:first-child { font-weight: 700; }
+        .size-pdf-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.82rem; font-weight: 600; color: var(--red);
+            margin-top: 8px; cursor: pointer; text-decoration: none;
+        }
+        .size-pdf-link:hover { text-decoration: underline; }
+
+        /* ============ MODAL SIZE CHART ============ */
+        .modal-sizechart {
+            margin-bottom: 20px; border: 1px solid #e8e8e8; border-radius: 8px; overflow: hidden;
+        }
+        .sizechart-toggle {
+            width: 100%; display: flex; align-items: center; gap: 8px;
+            padding: 12px 16px; background: #f8f8f8; border: none;
+            font-size: 0.85rem; font-weight: 700; color: var(--maroon);
+            cursor: pointer; transition: background 0.2s;
+        }
+        .sizechart-toggle:hover { background: #f0f0f0; }
+        .sizechart-arrow { margin-left: auto; transition: transform 0.2s; }
+        .modal-sizechart.expanded .sizechart-arrow { transform: rotate(180deg); }
+        .sizechart-body {
+            max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+        }
+        .modal-sizechart.expanded .sizechart-body { max-height: 600px; overflow-y: auto; }
+        .sizechart-tabs {
+            display: flex; gap: 0; border-bottom: 2px solid #eee; padding: 0 16px; background: #fafafa;
+        }
+        .sc-tab {
+            padding: 8px 14px; font-size: 0.75rem; font-weight: 600; color: #888;
+            border: none; background: none; cursor: pointer;
+            border-bottom: 2px solid transparent; margin-bottom: -2px;
+        }
+        .sc-tab:hover { color: var(--dark); }
+        .sc-tab.active { color: var(--maroon); border-bottom-color: var(--red); }
+        .sc-panel { display: none; padding: 12px 16px 16px; }
+        .sc-panel.active { display: block; }
+        .sc-note {
+            font-size: 0.78rem; color: #666; margin-bottom: 10px; padding: 8px 10px;
+            background: #f5f9ff; border-left: 3px solid var(--cyan); border-radius: 4px; line-height: 1.5;
+        }
+        .sc-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+        .sc-table th {
+            background: var(--maroon); color: white; padding: 7px 10px;
+            text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .sc-table td { padding: 6px 10px; border-bottom: 1px solid #eee; }
+        .sc-table td:first-child { font-weight: 700; }
+        .sc-table tr:hover td { background: #fafafa; }
+
+        .fabric-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        .fabric-table th {
+            background: var(--maroon); color: white; padding: 10px 14px;
+            text-align: left; font-size: 0.78rem; text-transform: uppercase;
+        }
+        .fabric-table td { padding: 10px 14px; border-bottom: 1px solid #eee; font-size: 0.85rem; }
+        .fabric-table tr:hover td { background: #fafafa; }
+
+        /* ============ FOOTER ============ */
+        footer {
+            background: var(--dark); color: #aaa; text-align: center;
+            padding: 28px 24px; font-size: 0.82rem;
+        }
+        footer a { color: var(--cyan); }
+        footer a:hover { text-decoration: underline; }
+
+        /* ============ TOAST ============ */
+        .toast {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+            background: var(--dark); color: white; padding: 12px 24px;
+            border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+            z-index: 500; opacity: 0; transition: all 0.3s;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .header-inner { flex-direction: column; gap: 8px; text-align: center; }
+            .hero h2 { font-size: 2rem; }
+            .hero p { font-size: 0.95rem; }
+            .cart-drawer { width: 100vw; }
+            .form-row { grid-template-columns: 1fr; }
+            .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="header-brand">
+            <h1>Elmhurst Bicycle Club</h1>
+            <span>Official Team Store &bull; Powered by CustomWear</span>
+        </div>
+        <div class="header-right">
+            <span class="header-badge">2025 Collection</span>
+            <button class="cart-btn" onclick="openContact()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Contact
+            </button>
+            <button class="cart-btn" onclick="openCart()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                Cart <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <div class="nav-scroll">
+        <button class="nav-toggle" onclick="document.getElementById('navMenu').classList.toggle('open')" aria-label="Menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+    </div>
+    <ul id="navMenu">
+        <li><a class="active" onclick="scrollToSection('products'); closeNav()">Shop All</a></li>
+        <li><a onclick="filterAndScroll('ss-jersey'); closeNav()">Short Sleeve</a></li>
+        <li><a onclick="filterAndScroll('ls-jersey'); closeNav()">Long Sleeve</a></li>
+        <li><a onclick="filterAndScroll('wind'); closeNav()">Wind Vest & Jacket</a></li>
+        <li><a onclick="filterAndScroll('sleeveless'); closeNav()">Sleeveless</a></li>
+        <li><a onclick="filterAndScroll('mtb'); closeNav()">MTB</a></li>
+        <li><a onclick="filterAndScroll('performance'); closeNav()">Performance</a></li>
+        <li><a onclick="filterAndScroll('bottoms'); closeNav()">Bibs & Shorts</a></li>
+        <li><a onclick="filterAndScroll('other'); closeNav()">More</a></li>
+        <li><a onclick="scrollToSection('fabrics'); closeNav()">Fabrics</a></li>
+        <li><a onclick="scrollToSection('sizing'); closeNav()">Size Charts</a></li>
+        <li><a onclick="scrollToSection('how-to-order'); closeNav()">How to Order</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <h2>2025 Team Kit</h2>
+    <p>High-performance custom cycling apparel designed exclusively for EBC members. Featuring Heat Mapping technology and multiple advanced fabric options for all weather conditions.</p>
+    <a href="#products" class="hero-cta" onclick="event.preventDefault(); scrollToSection('products')">Browse Collection</a>
+</div>
+
+<!-- PRODUCTS -->
+<div class="section" id="products">
+    <div class="section-header">
+        <div class="accent-bar"></div>
+        <h3 class="section-title">Team Collection</h3>
+        <p class="section-subtitle">Click any item to select your fabric, fit, and size. Add to cart, then request a quote.</p>
+    </div>
+    <div class="filter-bar" id="filterBar"></div>
+    <div class="product-grid" id="productGrid"></div>
+</div>
+
+<!-- FABRIC INFO -->
+<div class="section" id="fabrics">
+    <div class="section-header">
+        <div class="accent-bar"></div>
+        <h3 class="section-title">Performance Fabrics</h3>
+        <p class="section-subtitle">Every garment features two or more advanced fabrics. Choose the tech level that matches your riding conditions.</p>
+    </div>
+    <div class="info-grid">
+        <div class="info-card">
+            <h4>Lightweight Tech Fabrics</h4>
+            <table class="fabric-table">
+                <thead><tr><th>Fabric</th><th>Best For</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Tech 1.0</strong></td><td>Warm weather. Maximum breathability and moisture wicking.</td></tr>
+                    <tr><td><strong>Tech 2.0</strong></td><td>All-around performance. Balanced breathability and stretch.</td></tr>
+                    <tr><td><strong>Tech 3.0</strong></td><td>Premium hand feel. Enhanced moisture management.</td></tr>
+                    <tr><td><strong>Tech 4.1</strong></td><td>Ultra-lightweight. Ideal for hot conditions and high intensity.</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="info-card">
+            <h4>Thermal & Wind Fabrics</h4>
+            <table class="fabric-table">
+                <thead><tr><th>Fabric</th><th>Best For</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Tech 2.1</strong></td><td>Windproof. Full wind protection with breathable back.</td></tr>
+                    <tr><td><strong>LW Thermal Fleece</strong></td><td>Cool weather. Light insulation with moisture wicking.</td></tr>
+                    <tr><td><strong>MW Thermal Fleece</strong></td><td>Cold weather. Heavier insulation for winter rides.</td></tr>
+                    <tr><td><strong>Tech 2.5+</strong></td><td>Compression shorts/bibs. Support and muscle recovery.</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="info-card">
+            <h4>MTB & Sport Fabrics</h4>
+            <table class="fabric-table">
+                <thead><tr><th>Fabric</th><th>Best For</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Tech 1.3</strong></td><td>MTB / Sport. Durable, relaxed fit construction.</td></tr>
+                    <tr><td><strong>Tech 2.3</strong></td><td>MTB / Sport. Enhanced durability with stretch.</td></tr>
+                    <tr><td><strong>Tech 4.3</strong></td><td>MTB / Sport. Lightweight with maximum airflow.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- SIZE CHARTS -->
+<div class="section" id="sizing">
+    <div class="section-header">
+        <div class="accent-bar"></div>
+        <h3 class="section-title">Size Charts</h3>
+        <p class="section-subtitle">The main size to focus on is the 1/2 Chest Width. Measure a jersey or t-shirt you already own, lay flat, armpit to armpit.</p>
+    </div>
+
+    <div style="background:white;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.06);padding:24px;overflow-x:auto;">
+        <div class="size-tabs">
+            <button class="size-tab active" onclick="showSizeTab('sport')">Men's Sport Fit</button>
+            <button class="size-tab" onclick="showSizeTab('race')">Race Fit</button>
+            <button class="size-tab" onclick="showSizeTab('female-rb')">Women's Racerback</button>
+            <button class="size-tab" onclick="showSizeTab('unisex-rb')">Unisex Racerback Singlet</button>
+            <button class="size-tab" onclick="showSizeTab('sleeves')">Arm Sleeves</button>
+        </div>
+
+        <!-- MEN'S SPORT FIT -->
+        <div class="size-panel active" id="panel-sport">
+            <h4>Genesis/Volare Series &mdash; Men's Sport Fit (Raglan Sleeve)</h4>
+            <div class="size-note">
+                <strong>How to measure:</strong> Measure 1/2 chest from center armpit to center armpit on a jersey or t-shirt laid flat. All measurements are approximate. Specify if you want the silicone grip removed for a more relaxed fit.
+            </div>
+            <table class="size-table">
+                <thead><tr><th>Size</th><th>A. 1/2 Chest Width</th><th>B. Front Length</th><th>C. Sleeve Length</th><th>D. Back Length</th></tr></thead>
+                <tbody>
+                    <tr><td>2X Small</td><td>18.25" (46.5cm)</td><td>23.25" (59cm)</td><td>13.25" (34cm)</td><td>24.5" (62cm)</td></tr>
+                    <tr><td>X Small</td><td>19" (48cm)</td><td>23.75" (60.5cm)</td><td>13.75" (35cm)</td><td>25" (63.5cm)</td></tr>
+                    <tr><td>Small</td><td>19.75" (50.5cm)</td><td>24.25" (61.5cm)</td><td>14" (36cm)</td><td>25.75" (65.5cm)</td></tr>
+                    <tr><td>Medium</td><td>20.5" (52cm)</td><td>24.75" (63cm)</td><td>14.5" (37cm)</td><td>27" (68.5cm)</td></tr>
+                    <tr><td>Large</td><td>20.75" (53cm)</td><td>25" (63.5cm)</td><td>14.75" (38cm)</td><td>26.5" (67.5cm)</td></tr>
+                    <tr><td>X Large</td><td>21.25" (54cm)</td><td>26" (66cm)</td><td>15.25" (39cm)</td><td>27" (68.5cm)</td></tr>
+                    <tr><td>2X Large</td><td>22.5" (57cm)</td><td>26.5" (67.5cm)</td><td>15.75" (40cm)</td><td>28" (71cm)</td></tr>
+                    <tr><td>3X Large</td><td>23.25" (59cm)</td><td>27.5" (70cm)</td><td>16" (41cm)</td><td>28.75" (73cm)</td></tr>
+                    <tr><td>4X Large</td><td>24" (61cm)</td><td>28.5" (72.5cm)</td><td>16.5" (42cm)</td><td>30.25" (77cm)</td></tr>
+                    <tr><td>5X Large</td><td>24.75" (63cm)</td><td>29" (73.5cm)</td><td>17" (43cm)</td><td>31" (78.5cm)</td></tr>
+                    <tr><td>6X Large</td><td>25.5" (65cm)</td><td>29.75" (75.5cm)</td><td>17.25" (44cm)</td><td>32" (81.5cm)</td></tr>
+                    <tr><td>7X Large</td><td>25.75" (67cm)</td><td>30.75" (78cm)</td><td>17.75" (45cm)</td><td>32" (82.5cm)</td></tr>
+                </tbody>
+            </table>
+            <a class="size-pdf-link" href="images/size-chart-sport-fit.pdf" target="_blank">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Download full PDF chart
+            </a>
+        </div>
+
+        <!-- RACE FIT -->
+        <div class="size-panel" id="panel-race">
+            <h4>Genesis/Volare Series &mdash; Race Fit (Raglan Aero Sleeve)</h4>
+            <div class="size-note">
+                <strong>"Euro Race Fit"</strong> &mdash; Painted-on jerseys engineered for aerodynamic benefits. Form-fitting &amp; highly compressive without being restrictive. Longer fit on the waist lets you move freely.
+            </div>
+            <table class="size-table">
+                <thead><tr><th>Size</th><th>A. 1/2 Chest Width</th><th>B. Full Chest</th></tr></thead>
+                <tbody>
+                    <tr><td>3X Small</td><td>14.37" (36.5cm)</td><td>28.75" (73cm)</td></tr>
+                    <tr><td>2X Small</td><td>15.35" (39cm)</td><td>30.7" (78cm)</td></tr>
+                    <tr><td>X Small</td><td>16.5" (42cm)</td><td>33" (84cm)</td></tr>
+                    <tr><td>Small</td><td>17.5" (44.5cm)</td><td>35" (89.5cm)</td></tr>
+                    <tr><td>Medium</td><td>18.5" (47cm)</td><td>37" (94cm)</td></tr>
+                    <tr><td>Large</td><td>19.5" (49.5cm)</td><td>39" (99.5cm)</td></tr>
+                    <tr><td>X Large</td><td>20.5" (52cm)</td><td>41" (104cm)</td></tr>
+                    <tr><td>2X Large</td><td>21.45" (54.5cm)</td><td>42.9" (109cm)</td></tr>
+                    <tr><td>3X Large</td><td>22.45" (57cm)</td><td>44.9" (114cm)</td></tr>
+                    <tr><td>4X Large</td><td>23.4" (59.5cm)</td><td>46.85" (119cm)</td></tr>
+                    <tr><td>5X Large</td><td>24.4" (62cm)</td><td>48.8" (124cm)</td></tr>
+                </tbody>
+            </table>
+            <a class="size-pdf-link" href="images/size-chart-race-fit.pdf" target="_blank">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Download full PDF chart
+            </a>
+        </div>
+
+        <!-- WOMEN'S RACERBACK (Singlet Cycling Tech Fit) -->
+        <div class="size-panel" id="panel-female-rb">
+            <h4>Genesis/Volare Series &mdash; Women's Cycling Racerback Tech Fit</h4>
+            <div class="size-note">
+                <strong>Contouring SST (Second Skin Tech)</strong> for best performance. Options: Gel Grip hem or Non / Zipper choice: Full - 3/4 - Non. Ask about additional fabric combinations.
+            </div>
+            <table class="size-table">
+                <thead><tr><th>Size</th><th>A. Chest Width</th><th>B. Front Length</th><th>C. Back Length</th></tr></thead>
+                <tbody>
+                    <tr><td>X Small</td><td>15.5" - 16.5"</td><td>16" - 17"</td><td>21" - 22"</td></tr>
+                    <tr><td>Small</td><td>16.5" - 17.5"</td><td>17" - 18"</td><td>22" - 23"</td></tr>
+                    <tr><td>Medium</td><td>17.5" - 18.5"</td><td>18" - 19"</td><td>23" - 24"</td></tr>
+                    <tr><td>Large</td><td>18.5" - 19.5"</td><td>18.5" - 19.5"</td><td>24" - 25"</td></tr>
+                    <tr><td>X Large</td><td>19.5" - 20.5"</td><td>19.5" - 20.5"</td><td>25" - 26"</td></tr>
+                    <tr><td>2X Large</td><td>20.5" - 21.5"</td><td>20.5" - 21.5"</td><td>26" - 27"</td></tr>
+                    <tr><td>3X Large</td><td>21.5" - 22.5"</td><td>21.5" - 22.5"</td><td>27" - 28"</td></tr>
+                    <tr><td>4X Large</td><td>22.5" - 23.5"</td><td>22.5" - 23.5"</td><td>27" - 28"</td></tr>
+                </tbody>
+            </table>
+            <a class="size-pdf-link" href="images/size-chart-female-racerback.pdf" target="_blank">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Download full PDF chart
+            </a>
+        </div>
+
+        <!-- UNISEX RACERBACK SINGLET -->
+        <div class="size-panel" id="panel-unisex-rb">
+            <h4>Genesis/Volare Series &mdash; Racerback Tech Singlet (Unisex)</h4>
+            <div class="size-note">
+                <strong>TRUE Racer Back Singlet</strong> &mdash; Performance fit in a unisex design. SST (Second Skin Tech) for best performance. For a more relaxed flow fit, go a size up. Customize with or without gel grippy hem.
+            </div>
+            <table class="size-table">
+                <thead><tr><th>Size</th><th>A. Chest Width</th><th>B. Front Length</th></tr></thead>
+                <tbody>
+                    <tr><td>YS</td><td>15" (38.1cm)</td><td>21" (53.34cm)</td></tr>
+                    <tr><td>YM</td><td>15.5" (39.37cm)</td><td>21.5" (54.61cm)</td></tr>
+                    <tr><td>YL</td><td>17" (43.18cm)</td><td>23" (58.42cm)</td></tr>
+                    <tr><td>YXL</td><td>17.5" (44.45cm)</td><td>23.5" (59.69cm)</td></tr>
+                    <tr><td>X Small</td><td>18.5" (46.99cm)</td><td>24.5" (62.23cm)</td></tr>
+                    <tr><td>Small</td><td>19" (48.26cm)</td><td>25" (63.5cm)</td></tr>
+                    <tr><td>Medium</td><td>20.5" (52.07cm)</td><td>26" (66.04cm)</td></tr>
+                    <tr><td>Large</td><td>21" (53.34cm)</td><td>27" (68.58cm)</td></tr>
+                    <tr><td>X Large</td><td>22.5" (57.15cm)</td><td>28" (71.12cm)</td></tr>
+                    <tr><td>2X Large</td><td>23" (58.42cm)</td><td>28" (71.12cm)</td></tr>
+                </tbody>
+            </table>
+            <a class="size-pdf-link" href="images/size-chart-racerback-unisex.pdf" target="_blank">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Download full PDF chart
+            </a>
+        </div>
+
+        <!-- ARM SLEEVES -->
+        <div class="size-panel" id="panel-sleeves">
+            <h4>Arm Protection Sleeves &mdash; Arm Warmers &amp; Arm Coolers (Genesis/Volare)</h4>
+            <div class="size-note">
+                <strong>Evaporative Cooling technology</strong> actively lowers skin temperature upon contact with skin. Arm warmers are made of soft fleecy fabric for warmth on chillier days. Also great as base layers. UPF (Ultraviolet Protection Factor) rated.
+            </div>
+            <table class="size-table">
+                <thead><tr><th>Size</th><th>A. Length</th><th>B. Circ. at Top (Above Bicep)</th><th>C. Circ. at Wrist</th></tr></thead>
+                <tbody>
+                    <tr><td>3X Small</td><td>15.5" (39.5cm)</td><td>10" (25.6cm)</td><td>5.9" (15cm)</td></tr>
+                    <tr><td>2X Small</td><td>16" (41cm)</td><td>10.2" (26cm)</td><td>6.3" (15.8cm)</td></tr>
+                    <tr><td>X Small</td><td>16.5" (42cm)</td><td>10.6" (27cm)</td><td>6.3" (16.2cm)</td></tr>
+                    <tr><td>Small</td><td>17" (43.5cm)</td><td>11" (28cm)</td><td>6.6" (16.8cm)</td></tr>
+                    <tr><td>Medium</td><td>17.75" (45.5cm)</td><td>11.4" (29cm)</td><td>6.8" (17.2cm)</td></tr>
+                    <tr><td>Large</td><td>18.5" (47cm)</td><td>12.2" (31cm)</td><td>7.8" (20cm)</td></tr>
+                    <tr><td>X Large</td><td>18.75" (48cm)</td><td>13" (33cm)</td><td>8.25" (21cm)</td></tr>
+                    <tr><td>2X Large</td><td>19.5" (49.5cm)</td><td>13.7" (35cm)</td><td>9.05" (23cm)</td></tr>
+                    <tr><td>3X Large</td><td>20.3" (51.5cm)</td><td>14.5" (37cm)</td><td>9.44" (24cm)</td></tr>
+                    <tr><td>4X Large</td><td>21" (53.5cm)</td><td>14.9" (38cm)</td><td>9.85" (25cm)</td></tr>
+                </tbody>
+            </table>
+            <a class="size-pdf-link" href="images/size-chart-arm-sleeves.pdf" target="_blank">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Download full PDF chart
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- HOW TO ORDER -->
+<div class="section" id="how-to-order">
+    <div class="section-header">
+        <div class="accent-bar"></div>
+        <h3 class="section-title">How to Order</h3>
+        <p class="section-subtitle">Every order is custom-made to your specifications.</p>
+    </div>
+    <div class="steps-row">
+        <div class="step">
+            <div class="step-num">1</div>
+            <h4>Browse & Configure</h4>
+            <p>Explore designs. Select your preferred fabric, fit, and size for each item.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <h4>Add to Cart</h4>
+            <p>Build your full kit. Add as many items as you'd like to your cart.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <h4>Request a Quote</h4>
+            <p>Submit your cart with your contact info. CustomWear will send you a personalized quote.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">4</div>
+            <h4>Receive Your Kit</h4>
+            <p>Once confirmed, your custom kit is produced and shipped directly to you.</p>
+        </div>
+    </div>
+    <div class="info-grid" style="margin-top: 32px;">
+        <div class="info-card">
+            <h4>Fit Options</h4>
+            <ul>
+                <li><strong>Sport Female</strong> &mdash; Women's specific cut</li>
+                <li><strong>Sport Male</strong> &mdash; Men's performance fit</li>
+                <li><strong>Club Relaxed / Unisex</strong> &mdash; Relaxed fit for all</li>
+                <li><strong>Race</strong> &mdash; Tight aero fit for racing</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h4>Pocket Styles</h4>
+            <ul>
+                <li><strong>Side Panel</strong> &mdash; Pockets on both side panels + 2 zippered security pockets (4 total)</li>
+                <li><strong>Up Front</strong> &mdash; Under-sternum pockets for easy access + 1 zippered security pocket (3 total)</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h4>Custom Options</h4>
+            <ul>
+                <li>Silicone gel hem or relaxed no-gel hem</li>
+                <li>Adaptive / Recumbent pocket configuration</li>
+                <li>Power Bib straps (bibs)</li>
+                <li>Add zippered back security pocket (MTB)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>Elmhurst Bicycle Club Team Store &mdash; Custom apparel by <a href="https://www.customwear.us/" target="_blank" rel="noopener">CustomWear</a></p>
+    <p style="margin-top: 6px; font-size: 0.75rem; color: #555;">Questions? Contact your team coordinator or reach out to CustomWear directly.</p>
+</footer>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="productModal" onclick="closeProductModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeProductModal()">&times;</button>
+        <div class="modal-img-wrap" id="modalImg"></div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+</div>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+        <h3>Your Cart</h3>
+        <button class="cart-close" onclick="closeCart()">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+        <div class="cart-summary" id="cartSummary"></div>
+        <button class="btn-quote" id="btnRequestQuote" onclick="openQuoteForm()">Request a Quote</button>
+    </div>
+</div>
+
+<!-- QUOTE FORM -->
+<div class="quote-form-overlay" id="quoteOverlay" onclick="closeQuoteForm(event)">
+    <div class="quote-form" id="quoteFormContainer" onclick="event.stopPropagation()"></div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="contactModal" onclick="closeContact(event)">
+    <div class="modal" onclick="event.stopPropagation()" style="max-width:500px;">
+        <button class="modal-close" onclick="closeContact()">&times;</button>
+        <div class="modal-body" style="padding:32px;">
+            <h3 style="margin-bottom:4px;">Contact Us</h3>
+            <p style="color:var(--gray);font-size:0.9rem;margin-bottom:24px;">Questions about sizing, orders, or custom requests? We're here to help.</p>
+            <form onsubmit="submitContact(event)">
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>Name *</label>
+                        <input type="text" id="cName" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Email *</label>
+                        <input type="email" id="cEmail" required>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label>Subject</label>
+                    <select id="cSubject">
+                        <option>General Inquiry</option>
+                        <option>Sizing Help</option>
+                        <option>Order Status</option>
+                        <option>Custom Request</option>
+                        <option>Bulk / Team Order</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label>Message *</label>
+                    <textarea id="cMessage" rows="4" required placeholder="How can we help?"></textarea>
+                </div>
+                <button type="submit" class="btn-submit-quote" style="width:100%;">Send Message</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ PRODUCT DATA ============
+// ============ SIZE CHART DATA (shared across products) ============
+const sizeCharts = {
+    sport: {
+        name: "Men's Sport Fit",
+        pdf: 'images/size-chart-sport-fit.pdf',
+        note: 'Measure 1/2 chest from center armpit to center armpit on a jersey laid flat.',
+        cols: ['Size', '1/2 Chest', 'Front Length', 'Sleeve', 'Back Length'],
+        rows: [
+            ['2XS','18.25"','23.25"','13.25"','24.5"'],['XS','19"','23.75"','13.75"','25"'],
+            ['S','19.75"','24.25"','14"','25.75"'],['M','20.5"','24.75"','14.5"','27"'],
+            ['L','20.75"','25"','14.75"','26.5"'],['XL','21.25"','26"','15.25"','27"'],
+            ['2XL','22.5"','26.5"','15.75"','28"'],['3XL','23.25"','27.5"','16"','28.75"'],
+            ['4XL','24"','28.5"','16.5"','30.25"'],['5XL','24.75"','29"','17"','31"'],
+            ['6XL','25.5"','29.75"','17.25"','32"'],['7XL','25.75"','30.75"','17.75"','32"'],
+        ]
+    },
+    race: {
+        name: 'Race Fit',
+        pdf: 'images/size-chart-race-fit.pdf',
+        note: '"Euro Race Fit" — form-fitting & compressive for aerodynamic benefits.',
+        cols: ['Size', '1/2 Chest', 'Full Chest'],
+        rows: [
+            ['3XS','14.37"','28.75"'],['2XS','15.35"','30.7"'],['XS','16.5"','33"'],
+            ['S','17.5"','35"'],['M','18.5"','37"'],['L','19.5"','39"'],
+            ['XL','20.5"','41"'],['2XL','21.45"','42.9"'],['3XL','22.45"','44.9"'],
+            ['4XL','23.4"','46.85"'],['5XL','24.4"','48.8"'],
+        ]
+    },
+    'female-rb': {
+        name: "Women's Racerback",
+        pdf: 'images/size-chart-female-racerback.pdf',
+        note: 'Contouring SST (Second Skin Tech). Options: Gel Grip hem or Non.',
+        cols: ['Size', 'Chest Width', 'Front Length', 'Back Length'],
+        rows: [
+            ['XS','15.5"-16.5"','16"-17"','21"-22"'],['S','16.5"-17.5"','17"-18"','22"-23"'],
+            ['M','17.5"-18.5"','18"-19"','23"-24"'],['L','18.5"-19.5"','18.5"-19.5"','24"-25"'],
+            ['XL','19.5"-20.5"','19.5"-20.5"','25"-26"'],['2XL','20.5"-21.5"','20.5"-21.5"','26"-27"'],
+            ['3XL','21.5"-22.5"','21.5"-22.5"','27"-28"'],['4XL','22.5"-23.5"','22.5"-23.5"','27"-28"'],
+        ]
+    },
+    'unisex-rb': {
+        name: 'Unisex Racerback Singlet',
+        pdf: 'images/size-chart-racerback-unisex.pdf',
+        note: 'TRUE Racer Back Singlet — unisex SST performance fit. Size up for relaxed flow fit.',
+        cols: ['Size', 'Chest Width', 'Front Length'],
+        rows: [
+            ['YS','15"','21"'],['YM','15.5"','21.5"'],['YL','17"','23"'],['YXL','17.5"','23.5"'],
+            ['XS','18.5"','24.5"'],['S','19"','25"'],['M','20.5"','26"'],
+            ['L','21"','27"'],['XL','22.5"','28"'],['2XL','23"','28"'],
+        ]
+    },
+    sleeves: {
+        name: 'Arm Sleeves',
+        pdf: 'images/size-chart-arm-sleeves.pdf',
+        note: 'Evaporative Cooling tech. UPF rated. Also available in soft fleecy arm warmers.',
+        cols: ['Size', 'Length', 'Circ. Bicep', 'Circ. Wrist'],
+        rows: [
+            ['3XS','15.5"','10"','5.9"'],['2XS','16"','10.2"','6.3"'],['XS','16.5"','10.6"','6.3"'],
+            ['S','17"','11"','6.6"'],['M','17.75"','11.4"','6.8"'],['L','18.5"','12.2"','7.8"'],
+            ['XL','18.75"','13"','8.25"'],['2XL','19.5"','13.7"','9.05"'],
+            ['3XL','20.3"','14.5"','9.44"'],['4XL','21"','14.9"','9.85"'],
+        ]
+    },
+};
+
+const products = [
+    // SHORT SLEEVE JERSEYS — $69.00
+    { id: 'ss-banana-man', category: 'ss-jersey', type: 'Cycling Jersey Short Sleeve', design: 'Banana Man Classic', price: 69,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'Tech 3.0'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed', 'Race'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/ss-banana-man-1.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)', 'Adaptive/Recumbent Pockets'],
+      sizeCharts: ['sport', 'race'] },
+    { id: 'ss-ebc-classic', category: 'ss-jersey', type: 'Cycling Jersey Short Sleeve', design: 'EBC Classic 2.0', price: 69,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'Tech 3.0'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed', 'Race'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/ss-ebc-classic.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)', 'Adaptive/Recumbent Pockets'],
+      sizeCharts: ['sport', 'race'] },
+    { id: 'ss-bw-retro', category: 'ss-jersey', type: 'Cycling Jersey Short Sleeve', design: 'Black & White Retro v4', price: 69,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'Tech 3.0'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed', 'Race'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/ss-bw-retro.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)', 'Adaptive/Recumbent Pockets'],
+      sizeCharts: ['sport', 'race'] },
+    { id: 'ss-chicago', category: 'ss-jersey', type: 'Cycling Jersey Short Sleeve', design: 'Chicago Theme ONE', price: 69,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'Tech 3.0'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed', 'Race'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/ss-chicago.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)', 'Adaptive/Recumbent Pockets'],
+      sizeCharts: ['sport', 'race'] },
+    { id: 'ss-2025', category: 'ss-jersey', type: 'Cycling Jersey Short Sleeve', design: '2025 V1', price: 69,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'Tech 3.0'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/ss-2025-v1-1.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)', 'Adaptive/Recumbent Pockets'],
+      sizeCharts: ['sport', 'race'] },
+
+    // LONG SLEEVE JERSEYS — $79.00
+    { id: 'ls-banana-man', category: 'ls-jersey', type: 'Cycling Jersey Long Sleeve', design: 'Banana Man Classic', price: 79,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'LW Thermal Fleece', 'MW Thermal Fleece'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/ls-banana-man.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)', 'Adaptive/Recumbent Pockets'],
+      sizeCharts: ['sport'] },
+    { id: 'ls-ebc-classic', category: 'ls-jersey', type: 'Cycling Jersey Long Sleeve', design: 'EBC Classic 2.0', price: 79,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'LW Thermal Fleece', 'MW Thermal Fleece'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed', 'Race'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/ls-ebc-classic.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)', 'Adaptive/Recumbent Pockets'],
+      sizeCharts: ['sport'] },
+    { id: 'ls-navy', category: 'ls-jersey', type: 'Cycling Jersey Long Sleeve', design: 'Navy Blue', price: 79,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'LW Thermal Fleece', 'MW Thermal Fleece'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed', 'Race'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/ls-navy-blue.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)', 'Adaptive/Recumbent Pockets'],
+      sizeCharts: ['sport', 'race'] },
+    { id: 'ls-chicago', category: 'ls-jersey', type: 'Cycling Jersey Long Sleeve', design: 'Chicago Theme ONE', price: 79,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'LW Thermal Fleece', 'MW Thermal Fleece'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed', 'Race'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/ls-chicago.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)', 'Adaptive/Recumbent Pockets'],
+      sizeCharts: ['sport', 'race'] },
+    { id: 'ls-2025', category: 'ls-jersey', type: 'Cycling Jersey Long Sleeve', design: '2025 V1', price: 79,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'LW Thermal Fleece', 'MW Thermal Fleece'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed', 'Race'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/ls-2025-v1.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)', 'Adaptive/Recumbent Pockets'],
+      sizeCharts: ['sport', 'race'] },
+    { id: 'ls-dh-blue', category: 'ls-jersey', type: 'Die-Hards Bike Jersey Long Sleeve', design: 'Blue Mountain', price: 79,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'LW Thermal Fleece', 'MW Thermal Fleece'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed', 'Race'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/ls-diehards-blue-mountain.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)', 'Adaptive/Recumbent Pockets'],
+      sizeCharts: ['sport', 'race'] },
+    { id: 'ls-dh-red', category: 'ls-jersey', type: 'Die-Hards Bike Jersey Long Sleeve', design: 'Red Forest Night', price: 79,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'LW Thermal Fleece', 'MW Thermal Fleece'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed', 'Race'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/ls-diehards-red-forest-1.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)', 'Adaptive/Recumbent Pockets'],
+      sizeCharts: ['sport', 'race'] },
+
+    // WIND VEST — $69.00
+    { id: 'vest-banana-man', category: 'wind', type: 'Cycling Wind Vest', design: 'Banana Man Classic', price: 69,
+      fabrics: ['Tech 2.1'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/vest-banana-man.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)'],
+      sizeCharts: ['sport', 'race'] },
+    { id: 'vest-2025', category: 'wind', type: 'Cycling Wind Vest', design: '2025 V1', price: 69,
+      fabrics: ['Tech 2.1'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/vest-2025-v1.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)'],
+      sizeCharts: ['sport'] },
+
+    // WIND JACKET — $59.00
+    { id: 'jacket-banana-man', category: 'wind', type: 'Cycling Wind Jacket', design: 'Banana Man Classic', price: 59,
+      fabrics: ['Tech 2.1'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/jacket-banana-man.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)'],
+      sizeCharts: ['sport'] },
+    { id: 'jacket-ebc', category: 'wind', type: 'Cycling Wind Jacket', design: 'EBC Classic 2.0', price: 59,
+      fabrics: ['Tech 2.1'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/ls-ebc-classic.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)'],
+      sizeCharts: ['sport'] },
+    { id: 'jacket-2025', category: 'wind', type: 'Cycling Wind Jacket', design: '2025 V1', price: 59,
+      fabrics: ['Tech 2.1'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/ls-2025-v1.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)'],
+      sizeCharts: ['sport'] },
+
+    // RACER BACK & SLEEVELESS — $69.00
+    { id: 'rb-banana-man', category: 'sleeveless', type: 'Cycling Racer Back (Women\'s)', design: 'Banana Man Classic', price: 69,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'Tech 4.1'], fits: ['Sport Female'],
+      sizes: ['XS','S','M','L','XL'], image: 'images/racerback-banana-man.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)'],
+      sizeCharts: ['sport'] },
+    { id: 'rb-2025', category: 'sleeveless', type: 'Cycling Racer Back (Women\'s)', design: '2025 V1', price: 69,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'Tech 4.1'], fits: ['Sport Female'],
+      sizes: ['XS','S','M','L','XL'], image: 'images/racerback-2025-v1.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)'],
+      sizeCharts: ['female-rb'] },
+    { id: 'sleeveless-2025', category: 'sleeveless', type: 'Cycling Jersey Sleeveless', design: '2025 V1', price: 69,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'Tech 4.1'], fits: ['Sport Female', 'Sport Male', 'Club Unisex Relaxed', 'Race'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/sleeveless-2025-v1.png',
+      pockets: ['Side Panel (4 pockets)', 'Up Front (3 pockets)'], options: ['Silicone Gel Hem', 'No Gel Hem (Relaxed)'],
+      sizeCharts: ['female-rb'] },
+
+    // MTB — $69.00 (+$10 for zippered back pocket)
+    { id: 'mtb-topo', category: 'mtb', type: 'Mountain Bike Jersey 3/4 Sleeve', design: 'Mid Sky Topo v5', price: 69,
+      fabrics: ['Tech 1.3', 'Tech 2.3', 'Tech 4.3', 'LW Thermal Fleece'], fits: ['Flow Fit (Unisex)', 'Youth Flow Fit'],
+      sizes: ['YS','YM','YL','S','M','L','XL','2XL','3XL'], image: 'images/mtb-mid-sky-topo.png',
+      pockets: [], options: ['Add Zippered Back Security Pocket (+$10)'],
+      sizeCharts: ['unisex-rb'] },
+    { id: 'mtb-red-dawn', category: 'mtb', type: 'Mountain Bike Jersey 3/4 Sleeve', design: 'Red Dawn v6', price: 69,
+      fabrics: ['Tech 1.3', 'Tech 2.3', 'Tech 4.3', 'LW Thermal Fleece'], fits: ['Flow Fit (Unisex)', 'Youth Flow Fit'],
+      sizes: ['YS','YM','YL','S','M','L','XL','2XL','3XL'], image: 'images/mtb-red-dawn.png',
+      pockets: [], options: ['Add Zippered Back Security Pocket (+$10)'],
+      sizeCharts: ['sport'] },
+    { id: 'mtb-morning', category: 'mtb', type: 'Mountain Bike Jersey 3/4 Sleeve', design: 'Morning Ride v7', price: 69,
+      fabrics: ['Tech 1.3', 'Tech 2.3', 'Tech 4.3', 'LW Thermal Fleece', 'MW Thermal Fleece'], fits: ['Flow Fit (Unisex)', 'Youth Flow Fit'],
+      sizes: ['YS','YM','YL','S','M','L','XL','2XL','3XL'], image: 'images/mtb-morning-ride.png',
+      pockets: [], options: ['Add Zippered Back Security Pocket (+$10)'],
+      sizeCharts: ['sport'] },
+
+    // PERFORMANCE — $69.00
+    { id: 'perf-ss', category: 'performance', type: 'Performance Tech Sport Top SS', design: '2025 V1', price: 69,
+      fabrics: ['Tech 1.1', 'Tech 2.1', 'Tech 4.1'], fits: ['Unisex'],
+      sizes: ['XS','S','M','L','XL','2XL','3XL'], image: 'images/perf-sport-top-ss.png',
+      pockets: [], options: ['Add Zippered Back Security Pocket (+$10)'],
+      sizeCharts: ['sport'] },
+    { id: 'perf-rb', category: 'performance', type: 'Performance Tech Racerback (Women\'s)', design: '2025 V1', price: 69,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'Tech 4.1'], fits: ['Sport Female'],
+      sizes: ['XS','S','M','L','XL'], image: 'images/perf-racerback-female.png',
+      pockets: [], options: [],
+      sizeCharts: ['sport'] },
+    { id: 'perf-tank-m', category: 'performance', type: 'Performance Tank Top (Men\'s)', design: '2025 V1', price: 69,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'Tech 4.1'], fits: ['Sport Male'],
+      sizes: ['S','M','L','XL','2XL','3XL'], image: 'images/perf-tank-male.png',
+      pockets: [], options: [],
+      sizeCharts: ['female-rb'] },
+    { id: 'perf-tank-f', category: 'performance', type: 'Performance Tank Top (Women\'s)', design: '2025 V1', price: 69,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'Tech 4.1'], fits: ['Sport Female'],
+      sizes: ['XS','S','M','L','XL'], image: 'images/perf-tank-female.png',
+      pockets: [], options: [],
+      sizeCharts: ['unisex-rb'] },
+    { id: 'polo', category: 'performance', type: 'Polo', design: '2025 V1', price: 69,
+      fabrics: ['Tech 1.0', 'Tech 2.0', 'Tech 4.1', 'Tech Fleece', 'Performance Tech Wool'], fits: ['Sport'],
+      sizes: ['S','M','L','XL','2XL','3XL'], image: 'images/polo.png',
+      pockets: [], options: ['Long Sleeve Option'],
+      sizeCharts: ['female-rb'] },
+
+    // BIBS & SHORTS — Bibs $139 (+$15 Power Brace), Shorts $109
+    { id: 'bib-male', category: 'bottoms', type: 'Bib Shorts (Men\'s)', design: 'EBC Team', price: 139,
+      fabrics: ['Tech 2.5+', 'Tech 1.7'], fits: ['Sport Male'],
+      sizes: ['S','M','L','XL','2XL','3XL'], image: 'images/bib-shorts-male.png',
+      pockets: [], options: ['Add Power Bib Straps (+$15)'],
+      sizeCharts: ['sport'] },
+    { id: 'bib-female', category: 'bottoms', type: 'Bib Shorts (Women\'s)', design: 'EBC Team', price: 139,
+      fabrics: ['Tech 2.5+', 'Tech 1.7'], fits: ['Sport Female'],
+      sizes: ['XS','S','M','L','XL'], image: 'images/bib-shorts-female.png',
+      pockets: [], options: [],
+      sizeCharts: ['sport'] },
+    { id: 'shorts-male', category: 'bottoms', type: 'Cycling Shorts (Men\'s)', design: 'EBC Team', price: 109,
+      fabrics: ['Tech 2.5+', 'Tech 1.7'], fits: ['Sport Male'],
+      sizes: ['S','M','L','XL','2XL','3XL'], image: 'images/shorts-male.png',
+      pockets: [], options: [],
+      sizeCharts: ['sport'] },
+    { id: 'shorts-female', category: 'bottoms', type: 'Cycling Shorts (Women\'s)', design: 'EBC Team', price: 109,
+      fabrics: ['Tech 2.5+', 'Tech 1.7'], fits: ['Sport Female'],
+      sizes: ['XS','S','M','L','XL'], image: 'images/bibs-overview-2.png',
+      pockets: [], options: [],
+      sizeCharts: ['sport'] },
+
+    // OTHER
+    { id: 'hoodie', category: 'other', type: 'Hoodie', design: 'EBC Team', price: 89,
+      fabrics: ['Tech 2.0+', 'Tech 1.7'], fits: ['Unisex'],
+      sizes: ['S','M','L','XL','2XL','3XL'], image: 'images/hoodie.png',
+      pockets: [], options: [],
+      sizeCharts: ['sport'] },
+    { id: 'sleeves', category: 'other', type: 'Arm Sleeves', design: 'EBC Team', price: null,
+      fabrics: ['Tech 2.0'], fits: ['Unisex'],
+      sizes: ['S/M', 'L/XL'], image: 'images/sleeves.png',
+      pockets: [], options: [],
+      sizeCharts: ['sport'] },
+    { id: 'cap', category: 'other', type: 'Cycling Cap', design: 'EBC Team', price: 20,
+      fabrics: ['Standard'], fits: ['One Size'],
+      sizes: ['One Size'], image: 'images/cap.png',
+      pockets: [], options: [],
+      sizeCharts: [] },
+];
+
+const categories = [
+    { key: 'all', label: 'All' },
+    { key: 'ss-jersey', label: 'Short Sleeve' },
+    { key: 'ls-jersey', label: 'Long Sleeve' },
+    { key: 'wind', label: 'Wind' },
+    { key: 'sleeveless', label: 'Sleeveless' },
+    { key: 'mtb', label: 'MTB' },
+    { key: 'performance', label: 'Performance' },
+    { key: 'bottoms', label: 'Bibs & Shorts' },
+    { key: 'other', label: 'More' },
+];
+
+let cart = [];
+let currentFilter = 'all';
+
+// ============ RENDER ============
+function renderFilters() {
+    const bar = document.getElementById('filterBar');
+    bar.innerHTML = categories.map(c =>
+        `<button class="filter-btn ${c.key === currentFilter ? 'active' : ''}" onclick="filterProducts('${c.key}')">${c.label}</button>`
+    ).join('');
+}
+
+function renderProducts() {
+    const grid = document.getElementById('productGrid');
+    const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
+    grid.innerHTML = filtered.map(p => `
+        <div class="product-card" onclick="openProduct('${p.id}')">
+            <div class="product-image"><img src="${p.image}" alt="${p.design}" onerror="this.parentElement.innerHTML='<span style=color:#999;font-size:.8rem>Image coming soon</span>'"></div>
+            <div class="product-info">
+                <div class="product-category-tag">${p.type}</div>
+                <div class="product-name">${p.design}</div>
+                <div class="product-price-tag">${p.price ? '$' + p.price.toFixed(2) : 'Contact for price'}</div>
+                <div class="product-fits">${p.fits.map(f => `<span class="fit-tag">${f}</span>`).join('')}</div>
+                <button class="btn-add">Configure & Add</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterProducts(cat) {
+    currentFilter = cat;
+    renderFilters();
+    renderProducts();
+}
+
+function filterAndScroll(cat) {
+    currentFilter = cat;
+    renderFilters();
+    renderProducts();
+    scrollToSection('products');
+}
+
+function scrollToSection(id) {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ============ PRODUCT MODAL ============
+function openProduct(id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+
+    document.getElementById('modalImg').innerHTML = `<img src="${p.image}" alt="${p.design}">`;
+
+    let html = `
+        <h3>${p.type}</h3>
+        <div class="modal-design">Design: ${p.design}</div>
+        <div style="font-size:1.3rem;font-weight:800;color:var(--maroon);margin-bottom:16px;">${p.price ? '$' + p.price.toFixed(2) : 'Contact for price'}</div>
+    `;
+
+    // Fabric selector
+    if (p.fabrics.length > 1) {
+        html += `<span class="field-label">Fabric</span><div class="option-group" data-field="fabric">
+            ${p.fabrics.map(f => `<button class="option-btn" onclick="selectOption(this)">${f}</button>`).join('')}
+        </div>`;
+    } else {
+        html += `<input type="hidden" data-field="fabric" value="${p.fabrics[0]}">`;
+    }
+
+    // Fit selector
+    if (p.fits.length > 1) {
+        html += `<span class="field-label">Fit</span><div class="option-group" data-field="fit">
+            ${p.fits.map(f => `<button class="option-btn" onclick="selectOption(this)">${f}</button>`).join('')}
+        </div>`;
+    } else {
+        html += `<input type="hidden" data-field="fit" value="${p.fits[0]}">`;
+    }
+
+    // Size selector
+    html += `<span class="field-label">Size</span><div class="option-group" data-field="size">
+        ${p.sizes.map(s => `<button class="option-btn" onclick="selectOption(this)">${s}</button>`).join('')}
+    </div>`;
+
+    // Inline size chart
+    if (p.sizeCharts && p.sizeCharts.length > 0) {
+        html += `<div class="modal-sizechart">
+            <button class="sizechart-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Size Guide
+                <svg class="sizechart-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="sizechart-body">`;
+
+        if (p.sizeCharts.length > 1) {
+            html += `<div class="sizechart-tabs">
+                ${p.sizeCharts.map((key, i) => `<button class="sc-tab ${i===0?'active':''}" onclick="switchSCTab(this, '${p.id}-sc-${key}')">${sizeCharts[key].name}</button>`).join('')}
+            </div>`;
+        }
+
+        p.sizeCharts.forEach((key, i) => {
+            const chart = sizeCharts[key];
+            html += `<div class="sc-panel ${i===0?'active':''}" id="${p.id}-sc-${key}">
+                <div class="sc-note">${chart.note}</div>
+                <table class="sc-table">
+                    <thead><tr>${chart.cols.map(c => `<th>${c}</th>`).join('')}</tr></thead>
+                    <tbody>${chart.rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>
+                </table>
+                <a class="size-pdf-link" href="${chart.pdf}" target="_blank" style="margin-top:6px;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Download PDF
+                </a>
+            </div>`;
+        });
+
+        html += `</div></div>`;
+    }
+
+    // Pocket style
+    if (p.pockets.length > 0) {
+        html += `<span class="field-label">Pocket Style</span><div class="option-group" data-field="pockets">
+            ${p.pockets.map(pk => `<button class="option-btn" onclick="selectOption(this)">${pk}</button>`).join('')}
+        </div>`;
+    }
+
+    // Custom options
+    if (p.options.length > 0) {
+        html += `<span class="field-label">Options</span><div class="option-group" data-field="options">
+            ${p.options.map(o => `<button class="option-btn" onclick="toggleOption(this)">${o}</button>`).join('')}
+        </div>`;
+    }
+
+    // Quantity
+    html += `<span class="field-label">Quantity</span>
+        <div class="qty-row"><input type="number" class="qty-input" id="modalQty" value="1" min="1" max="99"></div>`;
+
+    html += `<button class="btn-add-cart" onclick="addToCart('${p.id}')">Add to Cart</button>`;
+
+    document.getElementById('modalBody').innerHTML = html;
+    document.getElementById('productModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeProductModal(e) {
+    if (!e || e.target === document.getElementById('productModal')) {
+        document.getElementById('productModal').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+}
+
+function selectOption(btn) {
+    btn.parentElement.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+}
+
+function toggleOption(btn) {
+    btn.classList.toggle('selected');
+}
+
+// ============ CART ============
+function addToCart(productId) {
+    const p = products.find(x => x.id === productId);
+    const modal = document.getElementById('modalBody');
+
+    // Gather selections
+    const getSelection = (field) => {
+        const group = modal.querySelector(`[data-field="${field}"]`);
+        if (!group) return null;
+        if (group.tagName === 'INPUT') return group.value;
+        const sel = group.querySelector('.selected');
+        return sel ? sel.textContent : null;
+    };
+
+    const fabric = getSelection('fabric');
+    const fit = getSelection('fit');
+    const size = getSelection('size');
+    const pockets = getSelection('pockets');
+    const qty = parseInt(document.getElementById('modalQty').value) || 1;
+
+    // Validate required fields
+    if ((!fabric && p.fabrics.length > 1) || (!fit && p.fits.length > 1) || !size) {
+        showToast('Please select all required options');
+        return;
+    }
+
+    // Gather toggle options
+    const optGroup = modal.querySelector('[data-field="options"]');
+    const selectedOptions = optGroup
+        ? Array.from(optGroup.querySelectorAll('.selected')).map(b => b.textContent)
+        : [];
+
+    // Calculate add-on costs from selected options
+    let addons = 0;
+    selectedOptions.forEach(o => {
+        const match = o.match(/\+\$(\d+)/);
+        if (match) addons += parseInt(match[1]);
+    });
+
+    cart.push({
+        id: Date.now(),
+        productId: p.id,
+        type: p.type,
+        design: p.design,
+        image: p.image,
+        fabric: fabric || p.fabrics[0],
+        fit: fit || p.fits[0],
+        size,
+        pockets: pockets || '',
+        options: selectedOptions,
+        qty,
+        unitPrice: (p.price || 0) + addons,
+        basePrice: p.price
+    });
+
+    updateCartUI();
+    closeProductModal();
+    showToast(`${p.design} added to cart`);
+}
+
+function removeFromCart(itemId) {
+    cart = cart.filter(c => c.id !== itemId);
+    updateCartUI();
+    renderCartItems();
+}
+
+function updateCartUI() {
+    const count = cart.reduce((sum, c) => sum + c.qty, 0);
+    document.getElementById('cartCount').textContent = count;
+}
+
+function renderCartItems() {
+    const container = document.getElementById('cartItems');
+    const summary = document.getElementById('cartSummary');
+    const btn = document.getElementById('btnRequestQuote');
+
+    if (cart.length === 0) {
+        container.innerHTML = '<div class="cart-empty">Your cart is empty.<br>Browse the collection and add items.</div>';
+        summary.textContent = '';
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        return;
+    }
+
+    btn.disabled = false;
+    btn.style.opacity = '1';
+
+    container.innerHTML = cart.map(item => `
+        <div class="cart-item">
+            <div class="cart-item-img"><img src="${item.image}" alt="${item.design}"></div>
+            <div class="cart-item-details">
+                <div class="cart-item-name">${item.type} - ${item.design}</div>
+                <div class="cart-item-meta">
+                    ${item.fabric} &bull; ${item.fit} &bull; ${item.size} &bull; Qty: ${item.qty}
+                    ${item.pockets ? '<br>' + item.pockets : ''}
+                    ${item.options.length ? '<br>' + item.options.join(', ') : ''}
+                </div>
+                <div style="font-weight:700;color:var(--maroon);margin-top:4px;">
+                    ${item.unitPrice ? '$' + (item.unitPrice * item.qty).toFixed(2) + (item.qty > 1 ? ' ($' + item.unitPrice.toFixed(2) + ' ea)' : '') : 'Quote'}
+                </div>
+            </div>
+            <button class="cart-item-remove" onclick="removeFromCart(${item.id})">&times;</button>
+        </div>
+    `).join('');
+
+    const totalItems = cart.reduce((sum, c) => sum + c.qty, 0);
+    const subtotal = cart.reduce((sum, c) => sum + (c.unitPrice * c.qty), 0);
+    const FREE_SHIPPING_THRESHOLD = 500;
+    const DISCOUNT_THRESHOLD = 300;
+    const DISCOUNT_PERCENT = 10;
+
+    let promoHtml = '';
+
+    // Discount progress bar
+    if (subtotal < DISCOUNT_THRESHOLD) {
+        const remaining = DISCOUNT_THRESHOLD - subtotal;
+        const pct = Math.min((subtotal / DISCOUNT_THRESHOLD) * 100, 100);
+        promoHtml += `<div class="promo-bar"><div class="promo-label">Add <strong>$${remaining.toFixed(2)}</strong> more for <strong>${DISCOUNT_PERCENT}% off</strong> your order!</div>
+            <div class="promo-track"><div class="promo-fill" style="width:${pct}%"></div></div></div>`;
+    } else {
+        promoHtml += `<div class="promo-bar unlocked"><div class="promo-label">${DISCOUNT_PERCENT}% discount unlocked!</div>
+            <div class="promo-track"><div class="promo-fill" style="width:100%"></div></div></div>`;
+    }
+
+    // Free shipping progress bar
+    if (subtotal < FREE_SHIPPING_THRESHOLD) {
+        const remaining = FREE_SHIPPING_THRESHOLD - subtotal;
+        const pct = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
+        promoHtml += `<div class="promo-bar" style="margin-top:8px;"><div class="promo-label">Add <strong>$${remaining.toFixed(2)}</strong> more for <strong>FREE shipping</strong>!</div>
+            <div class="promo-track"><div class="promo-fill shipping" style="width:${pct}%"></div></div></div>`;
+    } else {
+        promoHtml += `<div class="promo-bar unlocked" style="margin-top:8px;"><div class="promo-label">FREE shipping unlocked!</div>
+            <div class="promo-track"><div class="promo-fill shipping" style="width:100%"></div></div></div>`;
+    }
+
+    const discount = subtotal >= DISCOUNT_THRESHOLD ? subtotal * (DISCOUNT_PERCENT / 100) : 0;
+    const total = subtotal - discount;
+
+    summary.innerHTML = `
+        ${promoHtml}
+        <div style="margin-top:12px; display:flex; justify-content:space-between; font-size:0.85rem;">
+            <span>${totalItems} item${totalItems > 1 ? 's' : ''}</span>
+            <span>Subtotal: <strong>$${subtotal.toFixed(2)}</strong></span>
+        </div>
+        ${discount > 0 ? `<div style="display:flex; justify-content:space-between; font-size:0.85rem; color:#4CAF50; margin-top:4px;">
+            <span>${DISCOUNT_PERCENT}% Discount</span><span>-$${discount.toFixed(2)}</span></div>` : ''}
+        <div style="display:flex; justify-content:space-between; font-size:1.05rem; font-weight:800; margin-top:6px; color:var(--maroon);">
+            <span>Estimated Total</span><span>$${total.toFixed(2)}</span>
+        </div>
+    `;
+}
+
+function openCart() {
+    renderCartItems();
+    document.getElementById('cartOverlay').classList.add('open');
+    document.getElementById('cartDrawer').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCart() {
+    document.getElementById('cartOverlay').classList.remove('open');
+    document.getElementById('cartDrawer').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+// ============ QUOTE FORM ============
+function openQuoteForm() {
+    if (cart.length === 0) return;
+
+    const container = document.getElementById('quoteFormContainer');
+    container.innerHTML = `
+        <h3>Request a Quote</h3>
+        <p class="subtitle">Fill in your details and we'll get back to you with pricing for your custom kit.</p>
+        <form onsubmit="submitQuote(event)">
+            <div class="form-row">
+                <div class="form-field">
+                    <label>First Name *</label>
+                    <input type="text" id="qFirstName" required>
+                </div>
+                <div class="form-field">
+                    <label>Last Name *</label>
+                    <input type="text" id="qLastName" required>
+                </div>
+            </div>
+            <div class="form-field">
+                <label>Email *</label>
+                <input type="email" id="qEmail" required>
+            </div>
+            <div class="form-field">
+                <label>Phone</label>
+                <input type="tel" id="qPhone">
+            </div>
+            <div class="form-field">
+                <label>Shipping Address</label>
+                <textarea id="qAddress" rows="2" placeholder="Street, City, State, ZIP"></textarea>
+            </div>
+            <div class="form-field">
+                <label>Notes / Special Requests</label>
+                <textarea id="qNotes" rows="3" placeholder="Any additional details, questions, or customization requests..."></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel-quote" onclick="closeQuoteForm()">Cancel</button>
+                <button type="submit" class="btn-submit-quote">Submit Quote Request</button>
+            </div>
+        </form>
+    `;
+
+    document.getElementById('quoteOverlay').classList.add('open');
+}
+
+function closeQuoteForm(e) {
+    if (!e || e.target === document.getElementById('quoteOverlay')) {
+        document.getElementById('quoteOverlay').classList.remove('open');
+    }
+}
+
+function submitQuote(e) {
+    e.preventDefault();
+
+    const data = {
+        firstName: document.getElementById('qFirstName').value,
+        lastName: document.getElementById('qLastName').value,
+        email: document.getElementById('qEmail').value,
+        phone: document.getElementById('qPhone').value,
+        address: document.getElementById('qAddress').value,
+        notes: document.getElementById('qNotes').value,
+        items: cart.map(item => ({
+            type: item.type,
+            design: item.design,
+            fabric: item.fabric,
+            fit: item.fit,
+            size: item.size,
+            pockets: item.pockets,
+            options: item.options,
+            qty: item.qty
+        }))
+    };
+
+    // Build mailto body as fallback (in production this would be an API call)
+    const itemLines = data.items.map((item, i) =>
+        `${i+1}. ${item.type} - ${item.design}\n   Fabric: ${item.fabric} | Fit: ${item.fit} | Size: ${item.size} | Qty: ${item.qty}${item.pockets ? '\n   Pockets: ' + item.pockets : ''}${item.options.length ? '\n   Options: ' + item.options.join(', ') : ''}`
+    ).join('\n\n');
+
+    const body = `QUOTE REQUEST - Elmhurst Bicycle Club\n\nName: ${data.firstName} ${data.lastName}\nEmail: ${data.email}\nPhone: ${data.phone}\nAddress: ${data.address}\n\nITEMS:\n${itemLines}\n\nNotes: ${data.notes}`;
+
+    console.log('Quote Request:', JSON.stringify(data, null, 2));
+    console.log('Email body:\n', body);
+
+    // Show success
+    const container = document.getElementById('quoteFormContainer');
+    container.innerHTML = `
+        <div class="success-msg">
+            <div class="checkmark">&#10003;</div>
+            <h3>Quote Request Submitted!</h3>
+            <p>Thank you, ${data.firstName}! Your custom kit quote request has been received. The CustomWear team will review your selections and get back to you at <strong>${data.email}</strong> with pricing details.</p>
+            <br>
+            <button class="btn-submit-quote" onclick="finishQuote()" style="max-width:200px;margin:0 auto;">Done</button>
+        </div>
+    `;
+
+    // Also open mailto as backup
+    const subject = encodeURIComponent(`EBC Team Store - Quote Request from ${data.firstName} ${data.lastName}`);
+    const mailBody = encodeURIComponent(body);
+    window.open(`mailto:?subject=${subject}&body=${mailBody}`, '_blank');
+}
+
+function finishQuote() {
+    cart = [];
+    updateCartUI();
+    closeCart();
+    document.getElementById('quoteOverlay').classList.remove('open');
+    showToast('Quote submitted successfully!');
+}
+
+// ============ MODAL SIZE CHART TABS ============
+function switchSCTab(btn, panelId) {
+    const container = btn.closest('.sizechart-body');
+    container.querySelectorAll('.sc-tab').forEach(t => t.classList.remove('active'));
+    container.querySelectorAll('.sc-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
+}
+
+// ============ NAV ============
+function closeNav() {
+    document.getElementById('navMenu').classList.remove('open');
+}
+
+// ============ SIZE TABS ============
+function showSizeTab(key) {
+    document.querySelectorAll('.size-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.size-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + key).classList.add('active');
+    event.target.classList.add('active');
+}
+
+// ============ CONTACT ============
+function openContact() {
+    document.getElementById('contactModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeContact(e) {
+    if (!e || e.target === document.getElementById('contactModal')) {
+        document.getElementById('contactModal').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+}
+function submitContact(e) {
+    e.preventDefault();
+    const name = document.getElementById('cName').value;
+    const email = document.getElementById('cEmail').value;
+    const subject = document.getElementById('cSubject').value;
+    const message = document.getElementById('cMessage').value;
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+    const subj = encodeURIComponent(`EBC Team Store - ${subject}`);
+    window.open(`mailto:?subject=${subj}&body=${body}`, '_blank');
+    document.getElementById('contactModal').querySelector('.modal-body').innerHTML = `
+        <div class="success-msg">
+            <div class="checkmark">&#10003;</div>
+            <h3>Message Sent!</h3>
+            <p>Thanks, ${name}! Your email client should have opened with your message. If not, reach out to us directly.</p>
+            <br><button class="btn-submit-quote" onclick="closeContact()" style="max-width:160px;margin:0 auto;">Close</button>
+        </div>`;
+}
+
+// ============ TOAST ============
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ============ KEYBOARD ============
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        closeProductModal();
+        closeCart();
+        closeQuoteForm();
+        closeContact();
+    }
+});
+
+// ============ INIT ============
+renderFilters();
+renderProducts();
+</script>
+
+</body>
+</html>
